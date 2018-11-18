@@ -21,7 +21,6 @@ defmodule SherdogParser.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.4", only: [:dev, :test]},
       {:floki, "~> 0.20.0"},
       {:timex, "~> 3.0"},
       {:dialyxir, "~> 0.4", only: [:dev]},

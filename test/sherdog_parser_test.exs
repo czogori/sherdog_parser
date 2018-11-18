@@ -2,32 +2,18 @@ defmodule SherdogParserTest do
   use ExUnit.Case
   doctest SherdogParser
 
-  test "parse a fighter" do
-    fighters = [
-      {"fighter/Mamed-Khalidov-10489", "Mamed Khalidov"},
-      {"fighter/Borys-Mankowski-35714", "Borys Mankowski"}
-    ]
-
-    for {fighter_id, name} <- fighters do
-      html = get_fighter_html(fighter_id)
-
-      fighter = SherdogParser.parse_fighter(html)
-      assert fighter.name == name
-    end
+  setup_all do
+    {:ok, html} = File.read("./test/fixtures/mamed_khalidov_page.html")
+    {:ok, fighter_page: html}
   end
 
-  defp get_fighter_html(id) do
-    url = "http://www.sherdog.com/" <> id
+  test "parse a fighter", state do
+    fighter = SherdogParser.parse_fighter(state.fighter_page)
+    assert "Mamed Khalidov" == fighter.name
+  end
 
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        body
-
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        IO.puts("Not found :(")
-
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        IO.puts(reason)
-    end
+  test "find ids of fighters", state do
+    count = SherdogParser.find_fighters_id(state.fighter_page) |> Enum.count()
+    assert 55 == count
   end
 end
