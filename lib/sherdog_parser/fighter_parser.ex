@@ -13,6 +13,22 @@ defmodule SherdogParser.FighterParser do
     )
   end
 
+  def find_fighters_id(html) do
+    Floki.find(html, "a[href^=\"/fighter\"]")
+    |> Enum.map(fn i -> parse_item(i) end)
+    |> Enum.filter(&(&1 != :not_found))
+    |> Enum.uniq()
+  end
+
+  def parse_item(item) do
+    case item do
+      {"a", [{"href", id}], _} -> id
+      {"a", [_, {"href", id}], _} -> id
+      {"a", [{"href", id}, _], _} -> id
+      _ -> :not_found
+    end
+  end
+
   defp parse_name(html) do
     case Floki.find(html, "div.module.bio_fighter.vcard > h1") do
       [{"h1", _, [{_, _, [name]}, _]}] ->
@@ -24,7 +40,7 @@ defmodule SherdogParser.FighterParser do
         name
 
       _ ->
-        "brak"
+        :not_found
     end
   end
 

@@ -9,6 +9,7 @@ defmodule SherdogParser do
     FighterParser.parse(html)
   end
 
-  def parse_orgnization(id \\ "") do
+  def find_fighters_id(html) do
+    FighterParser.find_fighters_id(html)
   end
 end
