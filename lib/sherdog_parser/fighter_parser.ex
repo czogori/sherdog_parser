@@ -14,7 +14,8 @@ defmodule SherdogParser.FighterParser do
   end
 
   def find_fighters_id(html) do
-    Floki.find(html, "a[href^=\"/fighter\"]")
+    html
+    |> Floki.find("a[href^=\"/fighter\"]")
     |> Enum.map(fn i -> parse_item(i) end)
     |> Enum.filter(&(&1 != :not_found))
     |> Enum.uniq()

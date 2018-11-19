@@ -13,7 +13,11 @@ defmodule SherdogParserTest do
   end
 
   test "find ids of fighters", state do
-    count = SherdogParser.find_fighters_id(state.fighter_page) |> Enum.count()
+    count =
+      state.fighter_page
+      |> SherdogParser.find_fighters_id()
+      |> Enum.count()
+
     assert 55 == count
   end
 end
