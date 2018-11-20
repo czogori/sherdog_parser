@@ -1,4 +1,7 @@
 defmodule SherdogParser.Fight do
+  @moduledoc """
+  Documentation for SherdogParser.Fight.
+  """
   alias __MODULE__
   alias SherdogParser.Event
 

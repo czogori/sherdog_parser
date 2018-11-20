@@ -1,4 +1,7 @@
 defmodule SherdogParser.FighterUrl do
+  @moduledoc """
+  Unique address for a fighter.
+  """
   defstruct url: ""
 
   def new(url) do

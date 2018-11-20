@@ -1,5 +1,8 @@
 defmodule SherdogParser.FightParser do
-  alias SherdogParser.{Fight, FighterUrl, Event}
+  @moduledoc """
+  Documentation for SherdogParser.FightParser.
+  """
+  alias SherdogParser.{Event, Fight, FighterUrl}
 
   def parse(tr) do
     {"tr", _, [result, fighter, event, td_method_referee, round, date]} = tr

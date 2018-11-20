@@ -1,4 +1,7 @@
 defmodule SherdogParser.FightsParser do
+  @moduledoc """
+  Documentation for SherdogParser.FightsParser.
+  """
   alias SherdogParser.FightParser
 
   def parse(html) do
