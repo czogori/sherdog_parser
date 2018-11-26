@@ -9,7 +9,7 @@ defmodule SherdogParserTest do
 
   test "parse a fighter", state do
     fighter = SherdogParser.parse_fighter(state.fighter_page)
-    
+
     assert "Mamed Khalidov" == fighter.name
     assert ~D[1980-07-17] == fighter.birthdate
     assert {"Poland", "Olsztyn"} == fighter.birthplace
@@ -30,7 +30,7 @@ defmodule SherdogParserTest do
   test "fighter without a birthdate" do
     {:ok, html} = File.read("./test/fixtures/fighter_without_birthdate.html")
     fighter = SherdogParser.parse_fighter(html)
-    
+
     refute fighter.birthdate
   end
 end
