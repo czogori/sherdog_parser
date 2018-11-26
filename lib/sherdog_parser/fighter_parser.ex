@@ -4,11 +4,13 @@ defmodule SherdogParser.FighterParser do
   """
   alias SherdogParser.{Fighter, FightsParser}
 
+  @unknown "N/A"
+
   def parse(html) do
     Fighter.new(
       parse_name(html),
       "",
-      parse_birthday(html),
+      parse_birthdate(html),
       parse_birtplace(html),
       parse_height(html),
       parse_weight(html),
@@ -48,8 +50,9 @@ defmodule SherdogParser.FighterParser do
     end
   end
 
-  defp parse_birthday(html) do
+  defp parse_birthdate(html) do
     case Floki.find(html, "div.data > .bio > .birth_info > .item.birthday") do
+      [{"span", _, [_, {"span", _, [@unknown]}, _, _]}] -> nil
       [{"span", _, [_, {"span", _, [date]}, _, _]}] -> Date.from_iso8601!(date)
       _ -> nil
     end

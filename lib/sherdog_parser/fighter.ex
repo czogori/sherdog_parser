@@ -2,12 +2,12 @@ defmodule SherdogParser.Fighter do
   @moduledoc """
   Documentation for SherdogParser.Fighter.
   """
-  defstruct name: "", link: "", birthday: nil, birthplace: {}, height: 0, weight: 0, fights: []
+  defstruct name: "", link: "", birthdate: nil, birthplace: {}, height: 0, weight: 0, fights: []
 
-  def new(name, link, birthday, birthplace, height, weight, fights \\ []) do
+  def new(name, link, birthdate, birthplace, height, weight, fights \\ []) do
     %__MODULE__{
       name: name,
-      birthday: birthday,
+      birthdate: birthdate,
       birthplace: birthplace,
       height: height,
       weight: weight,
