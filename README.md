@@ -1,4 +1,4 @@
-# SherdogParser
+# SherdogParser [![Build Status](https://travis-ci.com/czogori/sherdog_parser.svg?branch=master)](https://travis-ci.com/czogori/sherdog_parser)
 
 **TODO: Add description**
 
