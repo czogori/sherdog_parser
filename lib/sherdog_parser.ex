@@ -5,11 +5,11 @@ defmodule SherdogParser do
 
   alias SherdogParser.FighterParser
 
-  def parse_fighter(html \\ "") do
+  def fighter(html) do
     FighterParser.parse(html)
   end
 
-  def find_fighters_id(html) do
+  def fighter_ids(html) do
     FighterParser.find_fighters_id(html)
   end
 end

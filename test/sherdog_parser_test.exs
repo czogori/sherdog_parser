@@ -8,7 +8,7 @@ defmodule SherdogParserTest do
   end
 
   test "parse a fighter", state do
-    fighter = SherdogParser.parse_fighter(state.fighter_page)
+    fighter = SherdogParser.fighter(state.fighter_page)
 
     assert "Mamed Khalidov" == fighter.name
     assert ~D[1980-07-17] == fighter.birthdate
@@ -21,7 +21,7 @@ defmodule SherdogParserTest do
   test "find ids of fighters", state do
     count =
       state.fighter_page
-      |> SherdogParser.find_fighters_id()
+      |> SherdogParser.fighter_ids()
       |> Enum.count()
 
     assert 55 == count
@@ -29,7 +29,7 @@ defmodule SherdogParserTest do
 
   test "fighter without a birthdate" do
     {:ok, html} = File.read("./test/fixtures/fighter_without_birthdate.html")
-    fighter = SherdogParser.parse_fighter(html)
+    fighter = SherdogParser.fighter(html)
 
     refute fighter.birthdate
   end
