@@ -33,4 +33,13 @@ defmodule SherdogParserTest do
 
     refute fighter.birthdate
   end
+
+  test "organization page" do
+    {:ok, html} = File.read("./test/fixtures/organization.html")
+
+    organization = SherdogParser.organization(html)
+
+    assert "Konfrontacja Sztuk Walki" == organization.name
+    assert 52 == Enum.count(organization.events)
+  end
 end
