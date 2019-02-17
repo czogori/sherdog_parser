@@ -4,13 +4,18 @@ defmodule SherdogParser.Event do
   """
   alias __MODULE__
 
-  defstruct name: "", date: nil, link: "", location: ""
+  defstruct [
+    title: "",
+    subtitle: "",
+    date: nil,
+    organization_url: "", 
+    location: ""
+  ]
 
-  def new(name, date, link, location \\ "") do
+  def new(title, date, location \\ "") do
     %Event{
-      name: name,
+      title: title,
       date: date,
-      link: link,
       location: location
     }
   end

@@ -40,6 +40,18 @@ defmodule SherdogParserTest do
     organization = SherdogParser.organization(html)
 
     assert "Konfrontacja Sztuk Walki" == organization.name
-    assert 52 == Enum.count(organization.events)
+    assert 52 == Enum.count(organization.event_urls)
+  end
+
+  test "event" do
+    {:ok, html} = File.read("./test/fixtures/event-ksw-44.html")
+
+    event = SherdogParser.event(html)
+
+    assert "KSW 44" == event.title
+    assert "The Game" == event.subtitle
+    assert "/organizations/Konfrontacja-Sztuk-Walki-668" == event.organization_url
+    assert ~D[2018-06-09] == event.date
+    assert "Ergo Arena, Gdansk, Poland" == event.location
   end
 end

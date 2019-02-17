@@ -22,9 +22,10 @@ defmodule SherdogParser.MixProject do
   defp deps do
     [
       {:floki, "~> 0.20.0"},
-      {:timex, "~> 3.0"},
+      {:httpoison, "~> 1.4", only: [:dev]},
+      {:timex, "~> 3.1"},
       {:dialyxir, "~> 0.4", only: [:dev]},
-      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 0.10.0", only: [:dev], runtime: false}
     ]
   end
 end

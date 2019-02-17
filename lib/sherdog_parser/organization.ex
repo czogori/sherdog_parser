@@ -3,12 +3,12 @@ defmodule SherdogParser.Organization do
   Documentation for SherdogParser.Organization.
   """
 
-  defstruct name: "", events: []
+  defstruct name: "", event_urls: []
 
-  def new(name, events) do
+  def new(name, event_urls) do
     %__MODULE__{
       name: name,
-      events: events
+      event_urls: event_urls
     }
   end
 end

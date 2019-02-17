@@ -5,7 +5,7 @@ defmodule SherdogParser.OrganizationParser do
   alias SherdogParser.{Event, Organization}
 
   def parse(html) do
-    Organization.new(parse_name(html), parse_events(html))
+    Organization.new(parse_name(html), parse_event_urls(html))
   end
 
   defp parse_name(html) do
@@ -14,35 +14,16 @@ defmodule SherdogParser.OrganizationParser do
     name
   end
 
-  defp parse_events(html) do
+  defp parse_event_urls(html) do
     html
     |> Floki.find("tr[itemtype=\"http://schema.org/Event\"")
-    |> Enum.map(fn i -> parse_event(i) end)
+    |> Enum.map(fn i -> parse_event_url(i) end)
   end
 
-  def parse_event(tr) do
+  def parse_event_url(tr) do
     case tr do
-      {"tr", _,
-       [
-         {"td", [],
-          [
-            _,
-            {"span", [{"class", "date"}],
-             [
-               {"span", [{"class", "month"}], [month]},
-               {"span", [{"class", "day"}], [day]},
-               {"span", [{"class", "year"}], [year]}
-             ]}
-          ]},
-         {"td", [],
-          [
-            {"a", [{"itemprop", "url"}, {"href", url}],
-             [{"span", [{"itemprop", "name"}], [name]}]}
-          ]},
-         {"td", [{"itemprop", "location"}], [_, location]}
-       ]} ->
-        Event.new(name, parse_date(year, month, day), url, location)
-
+      {"tr", _, [_, {"td", [], [{"a", [_, {"href", url}],_}]},_]} ->
+        url
       _ ->
         :err
     end
