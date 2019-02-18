@@ -11,7 +11,7 @@ defmodule SherdogParser.EventParser do
     organization_url = parse_organization_url(html)
     date = parse_date(html)
     location = parse_location(html)
-    
+
     Event.new(title, date, location)
     |> struct(subtitle: subtitle)
     |> struct(organization_url: organization_url)
@@ -25,7 +25,7 @@ defmodule SherdogParser.EventParser do
   end
 
   defp parse_organization_url(html) do
-    [{"a",[_,{"href", url}],_}] = Floki.find(html, "div.header > div.section_title > h2 > div > a")
+    [{"a", [_, {"href", url}], _}] = Floki.find(html, "div.header > div.section_title > h2 > div > a")
     url
   end
 

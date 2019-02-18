@@ -8,7 +8,7 @@ defmodule SherdogParser.Event do
     title: "",
     subtitle: "",
     date: nil,
-    organization_url: "", 
+    organization_url: "",
     location: ""
   ]
 

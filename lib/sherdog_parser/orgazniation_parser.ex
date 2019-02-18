@@ -22,7 +22,7 @@ defmodule SherdogParser.OrganizationParser do
 
   def parse_event_url(tr) do
     case tr do
-      {"tr", _, [_, {"td", [], [{"a", [_, {"href", url}],_}]},_]} ->
+      {"tr", _, [_, {"td", [], [{"a", [_, {"href", url}], _}]}, _]} ->
         url
       _ ->
         :err
