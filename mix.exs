@@ -25,7 +25,8 @@ defmodule SherdogParser.MixProject do
       {:httpoison, "~> 1.4", only: [:dev]},
       {:timex, "~> 3.1"},
       {:dialyxir, "~> 0.4", only: [:dev]},
-      {:credo, "~> 0.10.0", only: [:dev], runtime: false}
+      {:credo, "~> 0.10.0", only: [:dev], runtime: false},
+      {:pre_commit, "~> 0.3.4", only: :dev}
     ]
   end
 end
