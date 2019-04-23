@@ -4,24 +4,37 @@ defmodule SherdogParser.EventParser do
   """
 
   alias SherdogParser.Event
+  alias SherdogParser.Fight
   use Timex
 
-  def parse(html) do
+  def parse(html, id) do
     {title, subtitle} = parse_title(html)
-    organization_url = parse_organization_url(html)
     date = parse_date(html)
-    location = parse_location(html)
 
-    Event.new(title, date, location)
-    |> struct(subtitle: subtitle)
-    |> struct(organization_url: organization_url)
+    main_event = parse_main_event(html)
+    main_event = struct(main_event, %{
+      event_id: id,
+      date: date
+    })
+
+    %Event{
+      id: id,
+      title: title,
+      subtitle: subtitle,
+      date: date,
+      location: parse_location(html),
+      organization_url: parse_organization_url(html),
+      main_event: main_event
+    }
   end
 
   defp parse_title(html) do
-    [{"span", [{"itemprop", "name"}], [title, {"br", [], []}, subtitle]}] =
-      Floki.find(html, "div.header > div.section_title > h1 > span")
-
-    {title, subtitle}
+    case Floki.find(html, "div.header > div.section_title > h1 > span") do
+      [{"span", [{"itemprop", "name"}], [title, {"br", [], []}, subtitle]}] ->
+        {title, subtitle}
+      error -> error
+      _ -> "foo"
+    end
   end
 
   defp parse_organization_url(html) do
@@ -45,4 +58,60 @@ defmodule SherdogParser.EventParser do
 
     location
   end
+
+  def parse_main_event(html) do
+    [a, b] = Floki.find(html, "div.module.fight_card div[itemprop=performer]")
+    
+    {fighter_a_id, fighter_a_result} = parse_main_figter(a)
+    {fighter_b_id, fighter_b_result} = parse_main_figter(b)
+    
+    [
+      {"td", _, [_, _, fight_number]},
+      {"td", _, [_, _, method]},
+      {"td", _, [_, _, referee]},
+      {"td", _, [_, _, round]},
+      {"td", _, [_, _,  time]}
+    ] = Floki.find(html, "div.module.fight_card > div.content.event > div.footer  td");
+    
+    [minute, second] = time |> String.trim() |> String.split(":")
+    {:ok, time } = Time.new(0, minute |> String.to_integer, second |> String.to_integer)
+    
+    method = Regex.replace(~r/[^a-zA-Z ]+/, method, "", global: true)
+    |> String.downcase()
+    |> String.trim()
+    |> String.split()
+    |> List.to_tuple 
+
+    %Fight{
+      fighter_a_id: fighter_a_id,
+      fighter_b_id: fighter_b_id,
+      result: fighter_a_result |> get_result(),
+      referee: referee |> String.trim(),
+      round: round |> String.trim() |> String.to_integer,
+      method: method,
+      time: time
+    }
+
+  end
+
+  defp parse_main_figter(fighter) do
+    {"div",
+      _,
+      [
+        _,
+        {"h3", [],
+          [
+            {"a", [{"href", fighter_id}], _}
+          ]},
+        {"span", _, [result]},
+        _
+      ]
+    } = fighter
+
+    {fighter_id, result}
+  end
+
+  defp get_result("win"), do: :a
+  defp get_result("loss"), do: :b
+  defp get_result(_), do: :draw
 end

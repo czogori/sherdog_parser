@@ -1,5 +1,7 @@
 defmodule SherdogParserTest do
   use ExUnit.Case
+  alias SherdogParser.Fight
+  
   doctest SherdogParser
 
   setup_all do
@@ -14,17 +16,7 @@ defmodule SherdogParserTest do
     assert ~D[1980-07-17] == fighter.birthdate
     assert {"Poland", "Olsztyn"} == fighter.birthplace
     assert 183 == fighter.height
-    assert 84 == fighter.weight
-    assert 41 == fighter.fights |> Enum.count()
-  end
-
-  test "find ids of fighters", state do
-    count =
-      state.fighter_page
-      |> SherdogParser.fighter_ids()
-      |> Enum.count()
-
-    assert 55 == count
+    assert 42 == fighter.fights |> Enum.count()
   end
 
   test "fighter without a birthdate" do
@@ -43,15 +35,27 @@ defmodule SherdogParserTest do
     assert 52 == Enum.count(organization.event_urls)
   end
 
-  test "event" do
+  test "event ksw 44" do
     {:ok, html} = File.read("./test/fixtures/event-ksw-44.html")
-
-    event = SherdogParser.event(html)
-
+    id = "/events/KSW-44-The-Game-67083"
+    event = SherdogParser.event(html, id)
+    
+    assert "/events/KSW-44-The-Game-67083" == event.id
     assert "KSW 44" == event.title
     assert "The Game" == event.subtitle
     assert "/organizations/Konfrontacja-Sztuk-Walki-668" == event.organization_url
     assert ~D[2018-06-09] == event.date
     assert "Ergo Arena, Gdansk, Poland" == event.location
+    assert %Fight{
+      fighter_a_id: "/fighter/Karol-Bedorf-25819",
+      fighter_b_id: "/fighter/Mariusz-Pudzianowski-57308",
+      result: :a,
+      method: {"submission", "kimura"},
+      round: 1,
+      time: ~T[00:01:51],
+      date: ~D[2018-06-09],
+      referee: "Marc",
+      event_id: "/events/KSW-44-The-Game-67083"
+    } == event.main_event
   end
 end

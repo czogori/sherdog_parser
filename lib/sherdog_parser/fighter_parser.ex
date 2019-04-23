@@ -2,7 +2,7 @@ defmodule SherdogParser.FighterParser do
   @moduledoc """
   Documentation for SherdogParser.FighterParser.
   """
-  alias SherdogParser.{Fighter, FightsParser}
+  alias SherdogParser.Fighter
 
   @unknown "N/A"
 
@@ -13,17 +13,8 @@ defmodule SherdogParser.FighterParser do
       parse_birthdate(html),
       parse_birtplace(html),
       parse_height(html),
-      parse_weight(html),
-      FightsParser.parse(html)
+      parse_fights(html)
     )
-  end
-
-  def find_fighters_id(html) do
-    html
-    |> Floki.find("a[href^=\"/fighter\"]")
-    |> Enum.map(fn i -> parse_item(i) end)
-    |> Enum.filter(&(&1 != :not_found))
-    |> Enum.uniq()
   end
 
   def parse_item(item) do
@@ -105,5 +96,9 @@ defmodule SherdogParser.FighterParser do
       _ ->
         nil
     end
+  end
+
+  def parse_fights(html) do
+    Floki.find(html, "div.module.fight_history tr:not(.table_head)")
   end
 end
