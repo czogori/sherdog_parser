@@ -24,6 +24,7 @@ defmodule SherdogParser.OrganizationParser do
     case tr do
       {"tr", _, [_, {"td", [], [{"a", [_, {"href", url}], _}]}, _]} ->
         url
+
       _ ->
         :err
     end

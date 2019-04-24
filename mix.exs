@@ -9,7 +9,12 @@ defmodule SherdogParser.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -29,7 +34,7 @@ defmodule SherdogParser.MixProject do
       {:dialyxir, "~> 0.4", only: :dev},
       {:credo, "~> 0.10.0", only: :dev, runtime: false},
       {:pre_commit, "~> 0.3.4", only: :dev},
-      {:excoveralls, "~> 0.10", only: :test},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 end
