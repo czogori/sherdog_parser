@@ -10,5 +10,5 @@ defmodule SherdogParser.Event do
             organization_url: "",
             location: "",
             fights: [],
-            main_event: %Fight{}
+            main_fight: %Fight{}
 end

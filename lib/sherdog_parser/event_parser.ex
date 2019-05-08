@@ -11,20 +11,13 @@ defmodule SherdogParser.EventParser do
     {title, subtitle} = parse_title(html)
     date = parse_date(html)
 
-    main_event = parse_main_event(html)
-
-    main_event =
-      struct(main_event, %{
-        date: date
-      })
-
     %Event{
       title: title,
       subtitle: subtitle,
       date: date,
       location: parse_location(html),
       organization_url: parse_organization_url(html),
-      main_event: main_event
+      main_fight: html |> parse_main_fight() |> struct(%{date: date})
     }
   end
 
@@ -64,7 +57,7 @@ defmodule SherdogParser.EventParser do
     location
   end
 
-  def parse_main_event(html) do
+  def parse_main_fight(html) do
     [a, b] = Floki.find(html, "div.module.fight_card div[itemprop=performer]")
 
     {fighter_a_id, fighter_a_result} = parse_main_figter(a)

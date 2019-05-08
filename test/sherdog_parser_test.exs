@@ -55,6 +55,6 @@ defmodule SherdogParserTest do
              time: ~T[00:01:51],
              date: ~D[2018-06-09],
              referee: "Marc",
-           } == event.main_event
+           } == event.main_fight
   end
 end
