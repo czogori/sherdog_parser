@@ -38,9 +38,8 @@ defmodule SherdogParserTest do
   test "event ksw 44" do
     {:ok, html} = File.read("./test/fixtures/event-ksw-44.html")
     id = "/events/KSW-44-The-Game-67083"
-    event = SherdogParser.event(html, id)
+    event = SherdogParser.event(html)
 
-    assert "/events/KSW-44-The-Game-67083" == event.id
     assert "KSW 44" == event.title
     assert "The Game" == event.subtitle
     assert "/organizations/Konfrontacja-Sztuk-Walki-668" == event.organization_url
@@ -56,7 +55,6 @@ defmodule SherdogParserTest do
              time: ~T[00:01:51],
              date: ~D[2018-06-09],
              referee: "Marc",
-             event_id: "/events/KSW-44-The-Game-67083"
            } == event.main_event
   end
 end

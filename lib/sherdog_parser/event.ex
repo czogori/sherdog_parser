@@ -4,8 +4,7 @@ defmodule SherdogParser.Event do
   """
   alias SherdogParser.Fight
 
-  defstruct id: "",
-            title: "",
+  defstruct title: "",
             subtitle: "",
             date: nil,
             organization_url: "",

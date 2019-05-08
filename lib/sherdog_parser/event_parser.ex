@@ -7,7 +7,7 @@ defmodule SherdogParser.EventParser do
   alias SherdogParser.Fight
   use Timex
 
-  def parse(html, id) do
+  def parse(html) do
     {title, subtitle} = parse_title(html)
     date = parse_date(html)
 
@@ -15,12 +15,10 @@ defmodule SherdogParser.EventParser do
 
     main_event =
       struct(main_event, %{
-        event_id: id,
         date: date
       })
 
     %Event{
-      id: id,
       title: title,
       subtitle: subtitle,
       date: date,
