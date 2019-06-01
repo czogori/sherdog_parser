@@ -28,9 +28,6 @@ defmodule SherdogParser.EventParser do
 
       error ->
         error
-
-      _ ->
-        "foo"
     end
   end
 
