@@ -7,14 +7,14 @@ defmodule SherdogParser.FighterParser do
   @unknown "N/A"
 
   def parse(html) do
-    Fighter.new(
-      parse_name(html),
-      "",
-      parse_birthdate(html),
-      parse_birtplace(html),
-      parse_height(html),
-      parse_fights(html)
-    )
+    %Fighter{
+      name: parse_name(html),
+      link: "",
+      birthdate: parse_birthdate(html),
+      birthplace: parse_birtplace(html),
+      height: parse_height(html),
+      fights: parse_fights(html)
+    }
   end
 
   def parse_item(item) do
