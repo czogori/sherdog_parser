@@ -57,8 +57,8 @@ defmodule SherdogParser.EventParser do
   def parse_main_fight(html) do
     [a, b] = Floki.find(html, "div.module.fight_card div[itemprop=performer]")
 
-    {fighter_a_id, fighter_a_result} = parse_main_figter(a)
-    {fighter_b_id, fighter_b_result} = parse_main_figter(b)
+    {fighter_a_id, fighter_a_name, fighter_a_result} = parse_main_figter(a)
+    {fighter_b_id, fighter_b_name, fighter_b_result} = parse_main_figter(b)
 
     [
       {"td", _, [_, _, fight_number]},
@@ -81,7 +81,9 @@ defmodule SherdogParser.EventParser do
 
     %Fight{
       fighter_a_id: fighter_a_id,
+      fighter_a_name: fighter_a_name,
       fighter_b_id: fighter_b_id,
+      fighter_b_name: fighter_b_name,
       result: fighter_a_result |> get_result(),
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
@@ -96,13 +98,13 @@ defmodule SherdogParser.EventParser do
        _,
        {"h3", [],
         [
-          {"a", [{"href", fighter_id}], _}
+          {"a", [{"href", fighter_id}], [{_, _, [name]}]}
         ]},
        {"span", _, [result]},
        _
      ]} = fighter
 
-    {fighter_id, result}
+    {fighter_id, name, result}
   end
 
   defp get_result("win"), do: :a

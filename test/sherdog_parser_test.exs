@@ -48,7 +48,9 @@ defmodule SherdogParserTest do
 
     assert %Fight{
              fighter_a_id: "/fighter/Karol-Bedorf-25819",
+             fighter_a_name: "Karol Bedorf",
              fighter_b_id: "/fighter/Mariusz-Pudzianowski-57308",
+             fighter_b_name: "Mariusz Pudzianowski",
              result: :a,
              method: {"submission", "kimura"},
              round: 1,

@@ -5,7 +5,9 @@ defmodule SherdogParser.Fight do
   alias __MODULE__
 
   defstruct fighter_a_id: "",
+            fighter_a_name: "",
             fighter_b_id: "",
+            fighter_b_name: "",
             result: nil,
             method: "",
             round: 0,
