@@ -5,7 +5,10 @@ defmodule SherdogParser.OrganizationParser do
   alias SherdogParser.{Event, Organization}
 
   def parse(html) do
-    Organization.new(parse_name(html), parse_event_urls(html))
+    %Organization{
+      name: parse_name(html),
+      event_urls: parse_event_urls(html)
+    }
   end
 
   defp parse_name(html) do
