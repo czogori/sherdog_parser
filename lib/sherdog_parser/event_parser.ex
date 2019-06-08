@@ -106,7 +106,8 @@ defmodule SherdogParser.EventParser do
   end
 
   def parse_fights(html) do
-    fights = html
+    fights =
+      html
       |> Floki.find("div.module.event_match tr[itemprop=subEvent")
       |> Enum.map(&parse_fight/1)
 
