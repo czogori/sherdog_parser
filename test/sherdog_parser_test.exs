@@ -58,5 +58,7 @@ defmodule SherdogParserTest do
              date: ~D[2018-06-09],
              referee: "Marc"
            } == event.main_fight
+
+    assert 9 == Enum.count(event.fights)
   end
 end

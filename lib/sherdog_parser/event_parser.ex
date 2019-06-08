@@ -17,7 +17,8 @@ defmodule SherdogParser.EventParser do
       date: date,
       location: parse_location(html),
       organization_url: parse_organization_url(html),
-      main_fight: html |> parse_main_fight() |> struct(%{date: date})
+      main_fight: html |> parse_main_fight() |> struct(%{date: date}),
+      fights: parse_fights(html)
     }
   end
 
@@ -68,9 +69,6 @@ defmodule SherdogParser.EventParser do
       {"td", _, [_, _, time]}
     ] = Floki.find(html, "div.module.fight_card > div.content.event > div.footer  td")
 
-    [minute, second] = time |> String.trim() |> String.split(":")
-    {:ok, time} = Time.new(0, minute |> String.to_integer(), second |> String.to_integer())
-
     method =
       ~r/[^a-zA-Z ]+/
       |> Regex.replace(method, "", global: true)
@@ -88,7 +86,7 @@ defmodule SherdogParser.EventParser do
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
       method: method,
-      time: time
+      time: parse_time(time)
     }
   end
 
@@ -107,7 +105,73 @@ defmodule SherdogParser.EventParser do
     {fighter_id, name, result}
   end
 
+  def parse_fights(html) do
+    fights = html
+      |> Floki.find("div.module.event_match tr[itemprop=subEvent")
+      |> Enum.map(&parse_fight/1)
+
+    [parse_main_fight(html) | fights]
+  end
+
+  defp parse_fight(fight) do
+    {"tr", _,
+     [
+       _,
+       {"td", _,
+        [
+          {"meta", _, []},
+          _,
+          {"div", [{"class", "fighter_result_data"}],
+           [
+             {"a", [{"itemprop", "url"}, {"href", fighter_a_id}],
+              [{"span", [{"itemprop", "name"}], [fighter_a_name]}]},
+             {"br", [], []},
+             {"span", _, [fighter_a_result]}
+           ]}
+        ]},
+       {"td", [{"class", "versus"}], ["vs"]},
+       {"td", _,
+        [
+          _,
+          _,
+          {"div", [{"class", "fighter_result_data"}],
+           [
+             {"a", [{"itemprop", "url"}, {"href", fighter_b_id}],
+              [{"span", [{"itemprop", "name"}], [fighter_b_name]}]},
+             {"br", [], []},
+             _
+           ]}
+        ]},
+       {"td", [],
+        [
+          method,
+          {"br", [], []},
+          {"span", _, [referee]}
+        ]},
+       {"td", [], [round]},
+       {"td", [], [time]}
+     ]} = fight
+
+    %Fight{
+      fighter_a_id: fighter_a_id,
+      fighter_a_name: fighter_a_name,
+      fighter_b_id: fighter_b_id,
+      fighter_b_name: fighter_b_name,
+      result: fighter_a_result |> get_result(),
+      referee: referee |> String.trim(),
+      round: round |> String.trim() |> String.to_integer(),
+      method: method,
+      time: parse_time(time)
+    }
+  end
+
   defp get_result("win"), do: :a
   defp get_result("loss"), do: :b
   defp get_result(_), do: :draw
+
+  defp parse_time(time) do
+    [minute, second] = time |> String.trim() |> String.split(":")
+    {:ok, time} = Time.new(0, minute |> String.to_integer(), second |> String.to_integer())
+    time
+  end
 end
