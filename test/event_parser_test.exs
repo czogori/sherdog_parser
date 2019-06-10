@@ -6,11 +6,12 @@ defmodule EventTest do
 
   setup_all do
     {:ok, html} = File.read("./test/fixtures/event-ksw-44.html")
-    {:ok, html: html}
+    event = SherdogParser.event(html)
+    {:ok, event: event}
   end
 
   test "event ksw 44", state do
-    event = SherdogParser.event(state.html)
+    event = state.event
 
     assert "KSW 44" == event.title
     assert "The Game" == event.subtitle
@@ -20,47 +21,47 @@ defmodule EventTest do
   end
 
   test "main fight", state do
-    event = SherdogParser.event(state.html)
+    event = state.event
 
     assert %Fight{
-      fighter_a_id: "/fighter/Karol-Bedorf-25819",
-      fighter_a_name: "Karol Bedorf",
-      fighter_b_id: "/fighter/Mariusz-Pudzianowski-57308",
-      fighter_b_name: "Mariusz Pudzianowski",
-      result: :a,
-      method: {"submission", "kimura"},
-      round: 1,
-      time: ~T[00:01:51],
-      date: ~D[2018-06-09],
-      referee: "Marc"
-    } == event.main_fight
+             fighter_a_id: "/fighter/Karol-Bedorf-25819",
+             fighter_a_name: "Karol Bedorf",
+             fighter_b_id: "/fighter/Mariusz-Pudzianowski-57308",
+             fighter_b_name: "Mariusz Pudzianowski",
+             result: :a,
+             method: {"submission", "kimura"},
+             round: 1,
+             time: ~T[00:01:51],
+             date: ~D[2018-06-09],
+             referee: "Marc"
+           } == event.main_fight
   end
 
   test "number fights", state do
-    event = SherdogParser.event(state.html)
+    event = state.event
 
     assert 9 == Enum.count(event.fights)
   end
 
   test "first fight", state do
-    event = SherdogParser.event(state.html)
+    event = state.event
 
     assert %Fight{
-      fighter_a_id: "/fighter/Sebastian-Przybysz-218519",
-      fighter_a_name: "Sebastian Przybysz",
-      fighter_b_id: "/fighter/Dawid-Gralka-183925",
-      fighter_b_name: "Dawid Gralka",
-      result: :a,
-      method: "KO (Punch)",
-      round: 1,
-      time: ~T[00:01:48],
-      date: ~D[2018-06-09],
-      referee: "Łukasz Bosacki"
-    } == List.first(event.fights)
+             fighter_a_id: "/fighter/Sebastian-Przybysz-218519",
+             fighter_a_name: "Sebastian Przybysz",
+             fighter_b_id: "/fighter/Dawid-Gralka-183925",
+             fighter_b_name: "Dawid Gralka",
+             result: :a,
+             method: "KO (Punch)",
+             round: 1,
+             time: ~T[00:01:48],
+             date: ~D[2018-06-09],
+             referee: "Łukasz Bosacki"
+           } == List.first(event.fights)
   end
 
   test "last fight should be main event fight", state do
-    event = SherdogParser.event(state.html)
+    event = state.event
 
     assert event.main_fight == List.last(event.fights)
   end
