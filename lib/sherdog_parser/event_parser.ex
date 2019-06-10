@@ -10,6 +10,7 @@ defmodule SherdogParser.EventParser do
   def parse(html) do
     {title, subtitle} = parse_title(html)
     date = parse_date(html)
+    fights = add_date(parse_fights(html), date)
 
     %Event{
       title: title,
@@ -17,8 +18,8 @@ defmodule SherdogParser.EventParser do
       date: date,
       location: parse_location(html),
       organization_url: parse_organization_url(html),
-      main_fight: html |> parse_main_fight() |> struct(%{date: date}),
-      fights: parse_fights(html)
+      main_fight: List.last(fights),
+      fights: fights
     }
   end
 
@@ -106,12 +107,14 @@ defmodule SherdogParser.EventParser do
   end
 
   def parse_fights(html) do
+    main_fight = parse_main_fight(html)
+
     fights =
       html
       |> Floki.find("div.module.event_match tr[itemprop=subEvent")
       |> Enum.map(&parse_fight/1)
-
-    [parse_main_fight(html) | fights]
+      |> Enum.reverse()
+      |> Kernel.++([main_fight])
   end
 
   defp parse_fight(fight) do
@@ -130,7 +133,7 @@ defmodule SherdogParser.EventParser do
              {"span", _, [fighter_a_result]}
            ]}
         ]},
-       {"td", [{"class", "versus"}], ["vs"]},
+       _,
        {"td", _,
         [
           _,
@@ -146,7 +149,7 @@ defmodule SherdogParser.EventParser do
        {"td", [],
         [
           method,
-          {"br", [], []},
+          _,
           {"span", _, [referee]}
         ]},
        {"td", [], [round]},
@@ -174,5 +177,9 @@ defmodule SherdogParser.EventParser do
     [minute, second] = time |> String.trim() |> String.split(":")
     {:ok, time} = Time.new(0, minute |> String.to_integer(), second |> String.to_integer())
     time
+  end
+
+  defp add_date(fights, date) do
+    Enum.map(fights, fn f -> struct(f, %{date: date}) end)
   end
 end
