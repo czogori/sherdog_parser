@@ -6,8 +6,7 @@ defmodule EventTest do
 
   setup_all do
     {:ok, html} = File.read("./test/fixtures/event-ksw-44.html")
-    event = SherdogParser.event(html)
-    {:ok, event: event}
+    {:ok, event: SherdogParser.event(html)}
   end
 
   test "event ksw 44", state do
