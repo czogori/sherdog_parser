@@ -11,8 +11,6 @@ defmodule SherdogParser.Fight do
             result: nil,
             method: "",
             round: 0,
-            date: nil,
             referee: "",
-            event_id: "",
             time: ~T[00:00:00]
 end

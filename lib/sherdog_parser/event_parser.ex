@@ -10,7 +10,7 @@ defmodule SherdogParser.EventParser do
   def parse(html) do
     {title, subtitle} = parse_title(html)
     date = parse_date(html)
-    fights = add_date(parse_fights(html), date)
+    fights = parse_fights(html)
 
     %Event{
       title: title,
@@ -177,9 +177,5 @@ defmodule SherdogParser.EventParser do
     [minute, second] = time |> String.trim() |> String.split(":")
     {:ok, time} = Time.new(0, minute |> String.to_integer(), second |> String.to_integer())
     time
-  end
-
-  defp add_date(fights, date) do
-    Enum.map(fights, fn f -> struct(f, %{date: date}) end)
   end
 end
