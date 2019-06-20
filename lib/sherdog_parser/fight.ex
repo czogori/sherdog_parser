@@ -2,15 +2,18 @@ defmodule SherdogParser.Fight do
   @moduledoc """
   Documentation for SherdogParser.Fight.
   """
-  alias __MODULE__
+  use TypedStruct
 
-  defstruct fighter_a_id: "",
-            fighter_a_name: "",
-            fighter_b_id: "",
-            fighter_b_name: "",
-            result: nil,
-            method: "",
-            round: 0,
-            referee: "",
-            time: ~T[00:00:00]
+  @typedoc "A fight"
+  typedstruct do
+    field :fighter_a_id, String.t(), enforce: true
+    field :fighter_a_name, String.t(), enforce: true
+    field :fighter_b_id, String.t(), enforce: true
+    field :fighter_b_name, String.t(), enforce: true
+    field :result, atom(), enforce: true
+    field :method, String.t(), enforce: true
+    field :round, non_neg_integer()
+    field :referee, String.t()
+    field :time, Time.t()
+  end
 end

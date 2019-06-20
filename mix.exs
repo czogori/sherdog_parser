@@ -28,13 +28,14 @@ defmodule SherdogParser.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:credo, "~> 0.10.0", only: :dev, runtime: false},
+      {:dialyxir, "~> 0.4", only: :dev},
+      {:excoveralls, "~> 0.10", only: :test},
       {:floki, "~> 0.20.0"},
       {:httpoison, "~> 1.4", only: :dev},
-      {:timex, "~> 3.1"},
-      {:dialyxir, "~> 0.4", only: :dev},
-      {:credo, "~> 0.10.0", only: :dev, runtime: false},
       {:pre_commit, "~> 0.3.4", only: :dev},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:timex, "~> 3.1"},
+      {:typed_struct, "~> 0.1.4"}
     ]
   end
 end
