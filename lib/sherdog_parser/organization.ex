@@ -6,7 +6,7 @@ defmodule SherdogParser.Organization do
 
   @typedoc "An organization"
   typedstruct do
-    field :name, String.t(), enforce: true
-    field :event_urls, [String.t()], enforce: true
+    field(:name, String.t(), enforce: true)
+    field(:event_urls, [String.t()], enforce: true)
   end
 end
