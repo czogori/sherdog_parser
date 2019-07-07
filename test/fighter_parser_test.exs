@@ -1,6 +1,5 @@
-defmodule SherdogParserTest do
+defmodule FighterParserTest do
   use ExUnit.Case
-  alias SherdogParser.Fight
 
   doctest SherdogParser
 
@@ -24,14 +23,5 @@ defmodule SherdogParserTest do
     fighter = SherdogParser.fighter(html)
 
     refute fighter.birthdate
-  end
-
-  test "organization page" do
-    {:ok, html} = File.read("./test/fixtures/organization.html")
-
-    organization = SherdogParser.organization(html)
-
-    assert "Konfrontacja Sztuk Walki" == organization.name
-    assert 52 == Enum.count(organization.event_urls)
   end
 end
