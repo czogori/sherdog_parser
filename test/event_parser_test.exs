@@ -1,4 +1,4 @@
-defmodule EventTest do
+defmodule EventParserTest do
   use ExUnit.Case
   alias SherdogParser.Fight
 
