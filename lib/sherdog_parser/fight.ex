@@ -18,8 +18,9 @@ defmodule SherdogParser.Fight do
   end
 
   def method(m) do
-    [_, major, minor] = ~r/(.*?)\((.*?)\)/
-    |> Regex.run(m, global: true)
+    [_, major, minor] =
+      ~r/(.*?)\((.*?)\)/
+      |> Regex.run(m, global: true)
 
     {String.trim(major), minor}
   end

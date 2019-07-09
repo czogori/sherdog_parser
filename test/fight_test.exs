@@ -13,6 +13,7 @@ defmodule SherdogFightTest do
         expected: {"Submission", "Rear-Naked Choke"}
       }
     ]
+
     for data <- datas do
       assert data.expected == F.method(data.actual)
     end
