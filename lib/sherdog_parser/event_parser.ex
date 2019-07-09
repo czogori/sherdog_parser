@@ -3,8 +3,7 @@ defmodule SherdogParser.EventParser do
   Documentation for SherdogParser.EventParser.
   """
 
-  alias SherdogParser.Event
-  alias SherdogParser.Fight
+  alias SherdogParser.{Event, Fight}
   use Timex
 
   def parse(html) do
@@ -70,14 +69,6 @@ defmodule SherdogParser.EventParser do
       {"td", _, [_, _, time]}
     ] = Floki.find(html, "div.module.fight_card > div.content.event > div.footer  td")
 
-    method =
-      ~r/[^a-zA-Z ]+/
-      |> Regex.replace(method, "", global: true)
-      |> String.downcase()
-      |> String.trim()
-      |> String.split()
-      |> List.to_tuple()
-
     %Fight{
       fighter_a_id: fighter_a_id,
       fighter_a_name: fighter_a_name,
@@ -86,7 +77,7 @@ defmodule SherdogParser.EventParser do
       result: fighter_a_result |> get_result(),
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
-      method: method,
+      method: Fight.method(method),
       time: parse_time(time)
     }
   end

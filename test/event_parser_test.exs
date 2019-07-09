@@ -28,7 +28,7 @@ defmodule EventParserTest do
              fighter_b_id: "/fighter/Mariusz-Pudzianowski-57308",
              fighter_b_name: "Mariusz Pudzianowski",
              result: :a,
-             method: {"submission", "kimura"},
+             method: {"Submission", "Kimura"},
              round: 1,
              time: ~T[00:01:51],
              referee: "Marc"

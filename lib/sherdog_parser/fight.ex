@@ -16,4 +16,11 @@ defmodule SherdogParser.Fight do
     field(:referee, String.t())
     field(:time, Time.t())
   end
+
+  def method(m) do
+    [_, major, minor] = ~r/(.*?)\((.*?)\)/
+    |> Regex.run(m, global: true)
+
+    {String.trim(major), minor}
+  end
 end
