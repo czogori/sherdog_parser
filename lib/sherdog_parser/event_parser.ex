@@ -155,7 +155,7 @@ defmodule SherdogParser.EventParser do
       result: fighter_a_result |> get_result(),
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
-      method: method,
+      method: Fight.method(method),
       time: parse_time(time)
     }
   end

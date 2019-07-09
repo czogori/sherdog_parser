@@ -50,7 +50,7 @@ defmodule EventParserTest do
              fighter_b_id: "/fighter/Dawid-Gralka-183925",
              fighter_b_name: "Dawid Gralka",
              result: :a,
-             method: "KO (Punch)",
+             method: {"KO","Punch"},
              round: 1,
              time: ~T[00:01:48],
              referee: "Łukasz Bosacki"
