@@ -2,18 +2,20 @@ defmodule SherdogParser.FighterParser do
   @moduledoc """
   Documentation for SherdogParser.FighterParser.
   """
-  alias SherdogParser.Fighter
+  alias SherdogParser.{Fight, Fighter}
 
   @unknown "N/A"
 
   def parse(html) do
+    name = parse_name(html)
+
     %Fighter{
-      name: parse_name(html),
+      name: name,
       link: "",
       birthdate: parse_birthdate(html),
       birthplace: parse_birtplace(html),
       height: parse_height(html),
-      fights: parse_fights(html)
+      fights: parse_fights(html, name)
     }
   end
 
@@ -98,7 +100,55 @@ defmodule SherdogParser.FighterParser do
     end
   end
 
-  def parse_fights(html) do
-    Floki.find(html, "div.module.fight_history tr:not(.table_head)")
+  def parse_fights(html, name) do
+    html
+    |> Floki.find("div.module.fight_history tr:not(.table_head)")
+    |> Enum.map(fn f -> parse_fight(f, name) end)
   end
+
+  def parse_fight(fight, name) do
+    {"tr", _,
+     [
+       result,
+       fighter_b,
+       event,
+       method,
+       round,
+       time
+     ]} = fight
+
+    {fighter_b_id, fighter_b_name} = parse_fighter(fighter_b)
+    {method, referee} = parse_method(method)
+    {event_id, event_name, event_date} = parse_event(event)
+
+    %Fight{
+      fighter_a_id: "",
+      fighter_a_name: name,
+      fighter_b_id: fighter_b_id,
+      fighter_b_name: fighter_b_name,
+      result: parse_result(result),
+      referee: referee,
+      round: parse_round(round),
+      method: Fight.method(method),
+      time: parse_time(time),
+      event_id: event_id,
+      event_name: event_name,
+      event_date: event_date
+    }
+  end
+
+  def parse_fighter({"td", _, [{"a", [{"href", id}], [name]}]}), do: {id, name}
+
+  def parse_event({"td", _, [{"a", [{"href", event_id}], [{_, _, [name]}]}, _, {_, _, [date]}]}),
+    do: {event_id, name, date}
+
+  def parse_event({"td", _, [{"a", [{"href", event_id}], [name]}, _, {_, _, [date]}]}),
+    do: {event_id, name, date}
+
+  def parse_round({"td", [], [round]}), do: String.to_integer(round)
+  def parse_time({"td", [], [time]}), do: time
+  def parse_method({"td", _, [method, _, {_, _, [referee]}]}), do: {method, referee}
+  def parse_result({_, _, [{_, _, ["win"]}]}), do: :fighter_a
+  def parse_result({_, _, [{_, _, ["loss"]}]}), do: :fighter_b
+  def parse_result({_, _, [{_, _, ["draw"]}]}), do: :draw
 end

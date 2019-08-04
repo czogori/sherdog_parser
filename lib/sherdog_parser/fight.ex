@@ -15,7 +15,12 @@ defmodule SherdogParser.Fight do
     field(:round, non_neg_integer())
     field(:referee, String.t())
     field(:time, Time.t())
+    field(:event_id, String.t())
+    field(:event_name, String.t())
+    field(:event_date, Date.t())
   end
+
+  def method("Draw"), do: ""
 
   def method(m) do
     [_, major, minor] =
