@@ -74,11 +74,11 @@ defmodule SherdogParser.EventParser do
       fighter_a_name: fighter_a_name,
       fighter_b_id: fighter_b_id,
       fighter_b_name: fighter_b_name,
-      result: fighter_a_result |> get_result(),
+      result: fighter_a_result |> Fight.get_result(),
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
       method: Fight.method(method),
-      time: parse_time(time)
+      time: Fight.parse_time(time)
     }
   end
 
@@ -152,21 +152,11 @@ defmodule SherdogParser.EventParser do
       fighter_a_name: fighter_a_name,
       fighter_b_id: fighter_b_id,
       fighter_b_name: fighter_b_name,
-      result: fighter_a_result |> get_result(),
+      result: fighter_a_result |> Fight.get_result(),
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
       method: Fight.method(method),
-      time: parse_time(time)
+      time: Fight.parse_time(time)
     }
-  end
-
-  defp get_result("win"), do: :a
-  defp get_result("loss"), do: :b
-  defp get_result(_), do: :draw
-
-  defp parse_time(time) do
-    [minute, second] = time |> String.trim() |> String.split(":")
-    {:ok, time} = Time.new(0, minute |> String.to_integer(), second |> String.to_integer())
-    time
   end
 end

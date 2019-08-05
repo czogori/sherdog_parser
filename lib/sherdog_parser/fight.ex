@@ -29,4 +29,14 @@ defmodule SherdogParser.Fight do
 
     {String.trim(major), minor}
   end
+
+  def get_result("win"), do: :a
+  def get_result("loss"), do: :b
+  def get_result("draw"), do: :draw
+
+  def parse_time(time) do
+    [minute, second] = time |> String.trim() |> String.split(":")
+    {:ok, time} = Time.new(0, minute |> String.to_integer(), second |> String.to_integer())
+    time
+  end
 end

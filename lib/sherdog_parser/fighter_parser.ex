@@ -104,6 +104,7 @@ defmodule SherdogParser.FighterParser do
     html
     |> Floki.find("div.module.fight_history tr:not(.table_head)")
     |> Enum.map(fn f -> parse_fight(f, name) end)
+    |> Enum.reverse()
   end
 
   def parse_fight(fight, name) do
@@ -121,6 +122,10 @@ defmodule SherdogParser.FighterParser do
     {method, referee} = parse_method(method)
     {event_id, event_name, event_date} = parse_event(event)
 
+    {:ok, event_date} = event_date
+    |> String.replace("/", "")
+    |> DateTimeParser.parse_date()
+
     %Fight{
       fighter_a_id: "",
       fighter_a_name: name,
@@ -130,7 +135,7 @@ defmodule SherdogParser.FighterParser do
       referee: referee,
       round: parse_round(round),
       method: Fight.method(method),
-      time: parse_time(time),
+      time: time |> parse_time() |> Fight.parse_time(),
       event_id: event_id,
       event_name: event_name,
       event_date: event_date
