@@ -34,7 +34,6 @@ defmodule SherdogParser.MixProject do
       {:floki, "~> 0.20.0"},
       {:httpoison, "~> 1.4", only: :dev},
       {:pre_commit, "~> 0.3.4", only: :dev},
-      {:timex, "~> 3.1"},
       {:typed_struct, "~> 0.1.4"},
       {:date_time_parser, "~> 0.1.3"}
     ]

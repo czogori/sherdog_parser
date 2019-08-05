@@ -122,9 +122,10 @@ defmodule SherdogParser.FighterParser do
     {method, referee} = parse_method(method)
     {event_id, event_name, event_date} = parse_event(event)
 
-    {:ok, event_date} = event_date
-    |> String.replace("/", "")
-    |> DateTimeParser.parse_date()
+    {:ok, event_date} =
+      event_date
+      |> String.replace("/", "")
+      |> DateTimeParser.parse_date()
 
     %Fight{
       fighter_a_id: "",

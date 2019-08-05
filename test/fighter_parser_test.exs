@@ -21,6 +21,7 @@ defmodule FighterParserTest do
 
   test "the first fight", state do
     fighter = SherdogParser.fighter(state.fighter_page)
+
     expected = %Fight{
       fighter_a_id: "",
       fighter_a_name: "Mamed Khalidov",
