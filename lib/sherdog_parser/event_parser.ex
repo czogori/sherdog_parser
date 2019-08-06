@@ -40,12 +40,13 @@ defmodule SherdogParser.EventParser do
   end
 
   defp parse_date(html) do
-    [{_, _, [{_, [_, {"content", date}], _}, _]}] =
+    [{_, _, [{_, _, _}, date]}] =
       Floki.find(html, "div.header > div.info > div.authors_info > span.date")
 
-    date
-    |> Timex.parse!("{ISO:Extended}")
-    |> DateTime.to_date()
+    case DateTimeParser.parse_date(date) do
+      {:ok, date} -> date
+      _ -> nil
+    end
   end
 
   defp parse_location(html) do
