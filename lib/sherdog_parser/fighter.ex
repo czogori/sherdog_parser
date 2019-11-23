@@ -9,6 +9,7 @@ defmodule SherdogParser.Fighter do
   typedstruct do
     field(:name, String.t(), enforce: true)
     field(:link, String.t(), enforce: true)
+    field(:nickname, String.t())
     field(:birthdate, Date.t())
     field(:birthplace, String.t())
     field(:height, non_neg_integer())

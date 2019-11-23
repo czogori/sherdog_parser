@@ -7,10 +7,11 @@ defmodule SherdogParser.FighterParser do
   @unknown "N/A"
 
   def parse(html) do
-    name = parse_name(html)
+    {name, nickname} = parse_name(html)
 
     %Fighter{
       name: name,
+      nickname: nickname,
       link: "",
       birthdate: parse_birthdate(html),
       birthplace: parse_birtplace(html),
@@ -31,12 +32,12 @@ defmodule SherdogParser.FighterParser do
   defp parse_name(html) do
     case Floki.find(html, "div.module.bio_fighter.vcard > h1") do
       [{"h1", _, [{_, _, [name]}, _]}] ->
-        name
+        {name, nil}
 
       [
         {"h1", _, [{"span", _, [name]}, _, {"span", _, ["\"", {"em", [], [nickname]}, "\""]}]}
       ] ->
-        name
+        {name, nickname}
 
       _ ->
         :not_found
