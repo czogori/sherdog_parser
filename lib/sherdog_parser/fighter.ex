@@ -13,6 +13,7 @@ defmodule SherdogParser.Fighter do
     field(:birthdate, Date.t())
     field(:birthplace, String.t())
     field(:height, non_neg_integer())
+    field(:association, String.t())
     field(:fights, [%SherdogParser.Fight{}])
   end
 end

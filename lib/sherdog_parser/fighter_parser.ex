@@ -16,6 +16,7 @@ defmodule SherdogParser.FighterParser do
       birthdate: parse_birthdate(html),
       birthplace: parse_birtplace(html),
       height: parse_height(html),
+      association: parse_association(html),
       fights: parse_fights(html, name)
     }
   end
@@ -98,6 +99,13 @@ defmodule SherdogParser.FighterParser do
 
       _ ->
         nil
+    end
+  end
+
+  def parse_association(html) do
+    case Floki.find(html, "div.data > .bio > .size_info > .item.association .association") do
+      [{_, _, [{_, _, [association]}]}] -> association
+      _ -> nil
     end
   end
 
