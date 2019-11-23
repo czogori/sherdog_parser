@@ -70,6 +70,11 @@ defmodule SherdogParser.EventParser do
       {"td", _, [_, _, time]}
     ] = Floki.find(html, "div.module.fight_card > div.content.event > div.footer  td")
 
+    method =
+      method
+      |> String.trim()
+      |> Fight.method()
+
     %Fight{
       fighter_a_id: fighter_a_id,
       fighter_a_name: fighter_a_name,
@@ -78,7 +83,7 @@ defmodule SherdogParser.EventParser do
       result: fighter_a_result |> Fight.get_result(),
       referee: referee |> String.trim(),
       round: round |> String.trim() |> String.to_integer(),
-      method: Fight.method(method),
+      method: method,
       time: Fight.parse_time(time)
     }
   end
